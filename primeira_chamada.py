@@ -13,7 +13,11 @@ client = genai.Client(
 
 resposta = client.models.generate_content(
     model="models/gemini-3.5-flash-lite",
-    contents="Explique o que é um agente de IA em duas frases."
+    contents="Explique o que é um agente de IA em duas frases.",
+    config=types.GenerateContentConfig(
+        temperature=0,
+        system_instruction="Você é um professor que explica com analogias do dia a dia."
+    )
 )
 
 print(resposta.text)
