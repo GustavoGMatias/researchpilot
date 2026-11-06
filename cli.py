@@ -1,22 +1,11 @@
 import sys
 
-from app import config
-from app.agent.agent import Agent
-from app.agent.tools import ToolRegistry
-from app.memory.store import SessionMemory
-from app.services.llm import GeminiLLM, LLMError
-from app.services.rag import DocumentIndex
-
-
-def build_agent() -> Agent:
-    llm = GeminiLLM()
-    index = DocumentIndex(llm, config.DOCS_DIR, f"{config.DATA_DIR}/index.json")
-    memory = SessionMemory(f"{config.DATA_DIR}/sessions.json")
-    return Agent(llm, memory, ToolRegistry(index))
+from app import factory
+from app.services.llm import LLMError
 
 
 def main():
-    agent = build_agent()
+    agent, _ = factory.build()
     session = sys.argv[1] if len(sys.argv) > 1 else "cli"
     print(f"ResearchPilot (sessão '{session}') — digite 'sair' para encerrar.")
     while True:
